@@ -1,0 +1,37 @@
+iptables::rules:
+    '022 ssh':
+        'proto':    'tcp'
+        'port':     '22'
+        'iniface':  'eth0'
+        'action':   'accept'
+    '053 dns tcp eth0':
+        'proto':    'tcp'
+        'port':     '53'
+        'iniface':  'eth0'
+        'action':   'accept'
+    '053 dns udp eth0':
+        'proto':    'udp'
+        'port':     '53'
+        'iniface':  'eth0'
+        'action':   'accept'
+    '067 dhcp eth0':
+        'proto':    'udp'
+        'port':     '67'
+        'iniface':  'eth0'
+        'action':   'accept'
+    '067 dhcp eth1':
+        'proto':    'udp'
+        'port':     '67'
+        'iniface':  'eth1'
+        'action':   'accept'
+    '067 dhcp eth2':
+        'proto':    'udp'
+        'port':     '67'
+        'iniface':  'eth2'
+        'action':   'accept'
+
+packages::install:
+    - 'dnsmasq'
+
+services::enable:
+    - 'dnsmasq'

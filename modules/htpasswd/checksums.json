@@ -1,0 +1,17 @@
+{
+  "lib/puppet/parser/functions/ht_crypt.rb": "dc8e1a22eb412f1c80bfdd805c51b7dd",
+  "lib/puppet/parser/functions/ht_sha1.rb": "d0d0feaefc059e86fdf68757889b9f7b",
+  "lib/puppet/type/htpasswd.rb": "daa4350d4914d621f178ec5939e760be",
+  "spec/spec_helper.rb": "3ea886dd135e120afa31e0aab12e85b0",
+  "spec/functions/ht_crypt_spec.rb": "7c3a1a0f342694561f28eabf9640b21e",
+  "spec/functions/ht_md5_spec.rb": "38540991376ff696893932dd594ab960",
+  "lib/puppet/provider/htgroup/parsed.rb": "f06a6f2cba2c6829fd655f5c4cdafcef",
+  "spec/functions/ht_sha1_spec.rb": "77957c9c62bd1ef03cc2b87744f171ca",
+  "README.md": "5bb6fd5788e204444cad878aa82a9e62",
+  "lib/puppet/parser/functions/ht_md5.rb": "dadf5890c9e12b9310fa8d16227e83ec",
+  "metadata.json": "f8246568fe69229144c1a0259af120db",
+  "lib/puppet/type/htgroup.rb": "bd52449985b81d121f39128345779743",
+  "Rakefile": "8ff6a0f7db638421d1742c5d365d0266",
+  "lib/puppet/provider/htpasswd/parsed.rb": "9202d8f4d697fc9a8ec9410c120b0d1c",
+  "Gemfile": "78762bd26a7492e6e7cdaeec9b3607b3"
+}

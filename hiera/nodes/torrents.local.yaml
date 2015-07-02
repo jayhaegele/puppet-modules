@@ -1,0 +1,51 @@
+iptables::rules:
+    '091 transmission':
+        'proto':    'tcp'
+        'port':     '9091'
+        'source':   '192.168.1.0/24'
+        'action':   'accept'
+    '095 torrents':
+        'proto':    'tcp'
+        'port':     '3195'
+        'action':   'accept'
+    '2049 nfs':
+        'proto':    'tcp'
+        'port':     ['111', '2049']
+        'action':   'accept'
+
+packages::install:
+    - 'PyYAML'
+    - 'autofs'
+    - 'nfs-utils'
+    - 'mailx'
+    - 'mkvtoolnix'
+    - 'python-BeautifulSoup'
+    - 'python-feedparser'
+    - 'ssmtp'
+    - 'transmission-cli'
+    - 'transmission-daemon'
+    - 'unrar'
+    - 'vnstat'
+
+services::enable:
+    - 'autofs'
+    - 'nfs-server'
+    - 'rpcbind'
+    - 'transmission-daemon'
+    - 'vnstat'
+
+users:
+    'aron':
+        'groups':   ['transmission', 'media', 'wheel']
+    'downloader':
+        'uid':          '601'
+        'managehome':   true
+        'system':       true
+    'transmission':
+        'groups':   ['media']
+
+sysctl::options:
+    'net.core.rmem_max':
+        'value':    '4194304'
+    'net.core.wmem_max':
+        'value':    '1048576'

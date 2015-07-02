@@ -1,0 +1,135 @@
+packages::install:
+    - 'mailx'
+    - 'ssmtp'
+    - 'vnstat'
+
+services::enable:
+    - 'vnstat'
+
+sysctl::options:
+    'net.ipv4.ip_forward':
+        'value':    '1'
+
+iptables::rules:
+    '001 icmp eth0':
+        'iniface':  'eth0'
+        'proto':    'icmp'
+        'action':   'accept'
+    '001 icmp eth2':
+        'iniface':  'eth2'
+        'proto':    'icmp'
+        'action':   'accept'
+    '001 icmp eth3':
+        'iniface':  'eth3'
+        'proto':    'icmp'
+        'action':   'accept'
+    '022 ssh':
+        'proto':    'tcp'
+        'port':     '22'
+        'iniface':  'eth0'
+        'action':   'accept'
+    '998 drop external':
+        'iniface':  'eth1'
+        'action':   'drop'
+
+    # NAT
+    '000 forward related':
+        'chain':    'FORWARD'
+        'proto':    'all'
+        'state':    ['RELATED', 'ESTABLISHED']
+        'action':   'accept'
+    '010 nat eth1':
+        'table':    'nat'
+        'chain':    'POSTROUTING'
+        'proto':    'all'
+        'outiface': 'eth1'
+        'jump':     'MASQUERADE'
+    '011 forward eth0-eth1':
+        'table':    'filter'
+        'chain':    'FORWARD'
+        'proto':    'all'
+        'iniface':  'eth0'
+        'outiface': 'eth1'
+        'action':   'accept'
+    '012 forward eth2-eth1':
+        'table':    'filter'
+        'chain':    'FORWARD'
+        'proto':    'all'
+        'iniface':  'eth2'
+        'outiface': 'eth1'
+        'action':   'accept'
+    '013 forward eth3-eth1':
+        'table':    'filter'
+        'chain':    'FORWARD'
+        'proto':    'all'
+        'iniface':  'eth3'
+        'outiface': 'eth1'
+        'action':   'accept'
+    '999 forward reject':
+        'chain':    'FORWARD'
+        'proto':    'all'
+        'action':   'reject'
+
+    # forwards
+    '2322 filter ssh':
+        'proto':    'tcp'
+        'port':     '2322'
+        'iniface':  'eth1'
+        'action':   'accept'
+    '22 forward ssh':
+        'chain':        'FORWARD'
+        'proto':        'tcp'
+        'port':         '22'
+        'destination':  '192.168.1.207'
+        'iniface':      'eth1'
+        'action':       'accept'
+    '2322 nat ssh':
+        'table':    'nat'
+        'chain':    'PREROUTING'
+        'proto':    'tcp'
+        'iniface':  'eth1'
+        'port':     '2322'
+        'todest':   '192.168.1.207:22'
+        'jump':     'DNAT'
+
+    '2443 filter https':
+        'proto':    'tcp'
+        'port':     '2443'
+        'iniface':  'eth1'
+        'action':   'accept'
+    '443 forward https':
+        'chain':        'FORWARD'
+        'proto':        'tcp'
+        'port':         '443'
+        'destination':  '192.168.1.203'
+        'iniface':      'eth1'
+        'action':       'accept'
+    '2443 nat https':
+        'table':    'nat'
+        'chain':    'PREROUTING'
+        'proto':    'tcp'
+        'iniface':  'eth1'
+        'port':     '2443'
+        'todest':   '192.168.1.203:443'
+        'jump':     'DNAT'
+
+    '3195 filter torrents':
+        'proto':    'tcp'
+        'port':     '3195'
+        'iniface':  'eth1'
+        'action':   'accept'
+    '3195 forward torrents':
+        'chain':        'FORWARD'
+        'proto':        'tcp'
+        'port':         '3195'
+        'destination':  '192.168.1.206'
+        'iniface':      'eth1'
+        'action':       'accept'
+    '3195 nat torrents':
+        'table':    'nat'
+        'chain':    'PREROUTING'
+        'proto':    'tcp'
+        'iniface':  'eth1'
+        'port':     '3195'
+        'todest':   '192.168.1.206:3195'
+        'jump':     'DNAT'

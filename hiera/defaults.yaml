@@ -1,0 +1,113 @@
+classes:
+    - 'firewall'
+    - 'hosts'
+    - 'ntp'
+    - 'ssh'
+    - 'sudo'
+
+hosts::collect_all: true
+hosts::enable_ipv6_localhost: false
+
+packages::install:
+    - 'acpid'
+    - 'bash-completion'
+    - 'bind-utils'
+    - 'deltarpm'
+    - 'dstat'
+    - 'epel-release'
+    - 'git'
+    - 'htop'
+    - 'man-db'
+    - 'lsof'
+    - 'policycoreutils-python'
+    - 'puppetlabs-release'
+    - 'rubygem-deep_merge'
+    - 'rsync'
+    - 'sysstat'
+    - 'vim-enhanced'
+    - 'wget'
+
+packages::remove:
+    - 'firewalld'
+    - 'kexec-tools'
+    - 'NetworkManager'
+    - 'iprutils'
+
+services::enable:
+    - 'acpid'
+    - 'crond'
+    - 'puppet'
+
+services::disable:
+    - 'atd'
+    - 'avahi-daemon'
+    - 'ip6tables'
+    - 'postfix'
+
+iptables::rules:
+    '000 related':
+        'proto':    'all'
+        'state':    ['RELATED', 'ESTABLISHED']
+        'action':   'accept'
+    '001 icmp':
+        'proto':    'icmp'
+        'action':   'accept'
+    '002 loopback':
+        'proto':        'all'
+        'iniface':      'lo'
+        'destination':  '127.0.0.1/8'
+        'action':       'accept'
+    '022 ssh':
+        'proto':    'tcp'
+        'port':     '22'
+        'action':   'accept'
+    '999 reject':
+        'proto':    'all'
+        'action':   'reject'
+
+ssh::client_options:
+    'Host *':
+        'HashKnownHosts':   'no'
+
+ssh::server_options:
+    'X11Forwarding':    'no'
+    'PermitRootLogin':  'without-password'
+    'HostKey':
+        - '/etc/ssh/ssh_host_ecdsa_key'
+        - '/etc/ssh/ssh_host_rsa_key'
+
+sysctl::options: {}
+
+kernel::parameters:
+    'ipv6.disable':
+        'value': '1'
+
+ssh::authorized_keys:
+    'laptop':
+        'user': 'root'
+        'type': 'ssh-rsa'
+        'key':  'someshit'
+
+root_password: 'somehash'
+
+apache::default_mods:           false
+apache::default_confd_files:    false
+apache::default_vhost:          false
+
+groups:
+    'aron':
+        'gid': '2323'
+    'media':
+        'gid': '600'
+
+users:
+    'aron':
+        'uid':          '2323'
+        'groups':       ['media', 'wheel']
+        'managehome':   true
+        'home':         '/home/aron'
+
+sudo::configs:
+    'wheel':
+        'content'   : "%wheel ALL=(ALL) ALL"
+        'priority'  : 10

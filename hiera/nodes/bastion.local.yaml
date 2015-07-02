@@ -1,0 +1,21 @@
+---
+# no root for anyone: console, ssh, sudo, su
+ssh::server_options:
+    'PermitRootLogin':          'no'
+    'AuthenticationMethods':    'publickey,password'
+    'X11Forwarding':            'no'
+    'KexAlgorithms':            'diffie-hellman-group-exchange-sha1,ecdh-sha2-nistp521'
+    'MACs':                     'hmac-sha2-512-etm@openssh.com,hmac-sha2-256'
+    'Ciphers':                  'aes256-ctr'
+    'MaxAuthTries':             '2'
+    'LoginGraceTime':           '30s'
+    'HostKey':
+        - '/etc/ssh/ssh_host_ecdsa_key'
+        - '/etc/ssh/ssh_host_rsa_key'
+
+sudo::configs:
+    'wheel':
+        'content'   : "%wheel none=(ALL) ALL"
+        'priority'  : 99
+
+root_password: '!!'

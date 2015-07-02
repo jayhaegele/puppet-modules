@@ -1,0 +1,8 @@
+iptables::rules:
+    '081 puppet':
+        'proto':    'tcp'
+        'port':     '8140'
+        'action':   'accept'
+
+services::enable:
+    - 'puppetmaster'

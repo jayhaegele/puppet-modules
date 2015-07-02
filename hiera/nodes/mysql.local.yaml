@@ -1,0 +1,28 @@
+classes:
+    - 'mysql::server'
+    - 'mysql::server::config'
+
+iptables::rules:
+    '033 mysql kodi':
+        'proto':        'tcp'
+        'port':         '3306'
+        'src_range':    '192.168.1.30-192.168.1.32'
+        'action':       'accept'
+
+mysql::server::root_password: 'password'
+
+mysql::server::override_options:
+    'mysqld':
+        'bind-address': '0.0.0.0'
+
+mysql::server::users:
+    'kodi@%':
+        'ensure':           'present'
+        'password_hash':    'fakehash'
+
+mysql::server::grants:
+    'kodi@%/*.*':
+        'ensure':       'present'
+        'user':         'kodi@%'
+        'table':        '*.*'
+        'privileges':   ['ALL']

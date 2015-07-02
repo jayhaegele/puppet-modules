@@ -1,0 +1,10 @@
+packages::install:
+    - 'libvirt-daemon-config-nwfilter'
+    - 'libvirt-daemon-kvm'
+    - 'irqbalance'
+
+services::enable:
+    - 'libvirtd'
+    - 'irqbalance'
+
+purge_iptables: false

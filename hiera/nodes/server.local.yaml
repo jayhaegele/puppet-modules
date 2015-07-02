@@ -1,0 +1,19 @@
+uefi: true
+
+packages::install:
+    - 'apcupsd'
+    - 'autofs'
+    - 'libvirt-daemon-config-nwfilter'
+    - 'libvirt-daemon-kvm'
+    - 'irqbalance'
+    - 'mailx'
+    - 'smartmontools'
+    - 'ssmtp'
+
+services::enable:
+    - 'apcupsd'
+    - 'autofs'
+    - 'libvirtd'
+    - 'irqbalance'
+    - 'rpcbind'
+    - 'smartd'

@@ -1,0 +1,86 @@
+classes:
+    - 'apache'
+    - 'apache::mod::auth_basic'
+    - 'apache::mod::autoindex'
+    - 'apache::mod::proxy'
+    - 'apache::mod::proxy_http'
+    - 'apache::mod::rewrite'
+    - 'apache::mod::ssl'
+
+apache::mods:
+    - 'authn_core'
+    - 'authn_file'
+    - 'authz_user'
+    - 'authz_user'
+
+packages::install:
+    - 'autofs'
+    - 'nfs-utils'
+    - 'vnstat'
+
+services::enable:
+    - 'autofs'
+    - 'rpcbind'
+    - 'vnstat'
+
+iptables::rules:
+    '80 http':
+        'proto':    'tcp'
+        'port':     '80'
+        'action':   'accept'
+    '443 https':
+        'proto':    'tcp'
+        'port':     '443'
+        'action':   'accept'
+    '2443 nat':
+        'table':    'nat'
+        'chain':    'PREROUTING'
+        'proto':    'tcp'
+        'iniface':  'eth0'
+        'dport':    '2443'
+        'toports':  '443'
+        'jump':     'REDIRECT'
+
+apache::vhosts:
+    'media':
+        'port':     '80'
+        'docroot':  '/mnt/media'
+        'directories':
+            - 'path':                   '/mnt/media'
+              'index_options':          ['ignorecase', 'fancyindexing', 'namewidth=*', 'suppressicon']
+              'options':                ['indexes']
+    'ssl':
+        'ssl':      true
+        'port':     '443'
+        'docroot':  '/mnt/media'
+        'proxy_pass':
+            - 'path':   '/transmission'
+              'url':    'http://torrents.local:9091/transmission'
+        'directories':
+            - 'path':                   '/mnt/media'
+              'index_options':          ['ignorecase', 'fancyindexing', 'namewidth=*', 'suppressicon']
+              'options':                ['indexes']
+              'auth_type':              'basic'
+              'auth_name':              '%{::domain}'
+              'auth_user_file':         '/etc/httpd/conf/htpasswd'
+              'auth_basic_provider':    'file'
+              'require':                'valid-user'
+            - 'path':                   '/transmission'
+              'provider':               'location'
+              'auth_type':              'basic'
+              'auth_name':              '%{::domain}'
+              'auth_user_file':         '/etc/httpd/conf/htpasswd'
+              'auth_basic_provider':    'file'
+              'require':                'user aron'
+
+selinux::booleans::enable:
+    - 'httpd_use_nfs'
+    - 'httpd_can_network_connect'
+
+selinux::booleans::disable:
+    - 'httpd_builtin_scripting'
+    - 'httpd_enable_cgi'
+
+apache::users:
+    'aron':
+        'cryptpasswd':  'fakehash'

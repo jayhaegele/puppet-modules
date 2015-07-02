@@ -1,0 +1,20 @@
+{
+  "name": "leinaddm-htpasswd",
+  "version": "0.0.3",
+  "author": "Daniel De Marco",
+  "summary": "htpasswd module",
+  "license": "Apache Version 2.0",
+  "source": "git://github.com/leinaddm/puppet-htpasswd",
+  "requirements": [
+    {
+      "version_requirement": "3.x",
+      "name": "puppet"
+    }
+  ],
+  "project_page": "https://github.com/leinaddm/puppet-htpasswd",
+  "description": "Puppet module to manage htpasswd and htgroup files",
+  "issues_url": "https://github.com/leinaddm/puppet-htpasswd/issues",
+  "dependencies": [
+  
+  ]
+}

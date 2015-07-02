@@ -1,0 +1,20 @@
+iptables::rules:
+    '022 ssh':
+        'proto':    'tcp'
+        'port':     '22'
+        'iniface':  'eth0'
+        'action':   'accept'
+    '5000 wemo web':
+        'proto':    'tcp'
+        'port':     '5000'
+        'iniface':  'eth0'
+        'action':   'accept'
+    '224 multicast':
+        'pkttype':  'multicast'
+        'iniface':  'eth1'
+        'action':   'accept'
+    '54321 wemo':
+        'proto':    'udp'
+        'port':     '54321'
+        'iniface':  'eth1'
+        'action':   'accept'

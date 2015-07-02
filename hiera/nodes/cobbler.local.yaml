@@ -1,0 +1,29 @@
+iptables::rules:
+    '067 dhcp':
+        'proto':    'udp'
+        'port':     '67'
+        'action':   'accept'
+    '069 tftp':
+        'proto':    'udp'
+        'port':     '69'
+        'action':   'accept'
+    '080 http':
+        'proto':    'tcp'
+        'port':     '80'
+        'action':   'accept'
+
+packages::install:
+    - 'cobbler'
+    - 'dnsmasq'
+    - 'tftp'
+    - 'xinetd'
+
+services::enable:
+    - 'cobblerd'
+    - 'dnsmasq'
+    - 'httpd'
+    - 'xinetd'
+
+selinux::booleans::enable:
+    - 'httpd_can_network_connect_cobbler'
+    - 'httpd_serve_cobbler_files'
